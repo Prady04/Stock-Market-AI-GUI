@@ -162,14 +162,15 @@ def predict_stock(symbol, period, sim, future):
             f"<table style='border: 1px solid black; font-weight:bold; font-size:larger; background-color:white'><tr style='border: 1px solid black;'><th style='border: 1px solid black;'>Date:</th><td style='border: 1px solid black;'>{x}</td></tr><tr style='border: 1px solid black;'><th style='border: 1px solid black;'>Close:</th><td style='border: 1px solid black;'>{round(y,2)}</td></tr></table>"
             for x, y in zip(date_ori[::5], r[::5])
         ]
-        lines = plt.plot(date_ori[::5], r[::5], label=f"forecast {no + 1}", marker="*")
+        min_len = min(len(date_ori), len(r))  # Ensure both have the same length
+        lines = plt.plot(date_ori[:min_len][::5], r[:min_len][::5], label=f"forecast {no + 1}", marker="*")
         tooltips = mpld3.plugins.PointHTMLTooltip(
             lines[0], labels=labels, voffset=10, hoffset=10
         )
         mpld3.plugins.connect(plt.gcf(), tooltips)
 
     true_trend = plt.plot(
-        df.iloc[:, 0].tolist()[::5],
+        df.iloc[:, 0].to_list()[::5],
         df["Close"][::5],
         label="true trend",
         c="black",
@@ -177,7 +178,7 @@ def predict_stock(symbol, period, sim, future):
     )[0]
     labels_true = [
         f"<table style='border: 1px solid black; font-weight:bold; font-size:larger; background-color:white'><tr style='border: 1px solid black;'><th style='border: 1px solid black;'>Date:</th><td style='border: 1px solid black;'>{y}</td></tr><tr style='border: 1px solid black;'><th style='border: 1px solid black;'>Close:</th><td style='border: 1px solid black;'>{round(x,2)}</td></tr></table>"
-        for x, y in zip(df["Close"].tolist()[::5], df.iloc[:, 0].tolist()[::5])
+        for x, y in zip(df["Close"].to_list()[::5], df.iloc[:, 0].to_list()[::5])
     ]
     tooltips_true = mpld3.plugins.PointHTMLTooltip(
         true_trend, labels=labels_true, voffset=10, hoffset=10

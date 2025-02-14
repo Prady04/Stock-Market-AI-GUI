@@ -43,7 +43,7 @@ def process_stock_data(df, period):
     if df is None or df.empty:
         return None, None
 
-    close = df["Close"].round(2).tolist()
+    close = df["Close"].round(2).to_list() 
     date_ori = pd.to_datetime(df.index).strftime("%Y-%m-%d %H:%M")
 
     # Resample data for different periods
@@ -56,7 +56,7 @@ def process_stock_data(df, period):
     else:
         df_resampled = df
 
-    close_resampled = df_resampled["Close"].round(2).tolist()
+    close_resampled = df_resampled["Close"].round(2).to_list()
     date_resampled = pd.to_datetime(df_resampled.index).strftime("%Y-%m-%d %H:%M")
 
     return date_resampled, close_resampled
@@ -116,7 +116,7 @@ def stock_today(symbol):
         return None
 
     # Access the 'Close' prices for the specific ticker
-    close = df["Close"][symbol].round(2).tolist()
+    close = df["Close"][symbol].round(2).to_list()
     date_ori = pd.to_datetime(df.index).strftime("%Y-%m-%d %H:%M")
 
     title = f"Stock: {symbol} Date: {datetime.now().strftime('%d/%m/%Y')}"
